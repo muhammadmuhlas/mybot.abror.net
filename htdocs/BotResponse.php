@@ -569,10 +569,11 @@ class BotResponse{
         }
     }
 
-    public function getChatsData($query){
+    public function getChatsData($command, $query){
 
 	    $chats = Capsule::table('chats')
             ->where('text', 'LIKE', '%' . $query . '%')
+            ->whereNotIn('text', 'LIKE', '%' . $command . '%')
             ->orderBy('id', 'desc')
             ->limit(5)
             ->get();

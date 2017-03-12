@@ -28,7 +28,7 @@ class Main extends BotResponse {
 
                         $command_property = $this->getCommandProperties($event, '@@tugas');
 
-                        $this->botSendText($event, $this->getChatsData($command_property));
+                        $this->botSendText($event, $this->getChatsData('@@tugas', $command_property));
                     }
 
                 }
