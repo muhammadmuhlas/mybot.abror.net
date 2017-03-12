@@ -581,10 +581,9 @@ class BotResponse{
         date_default_timezone_set('Asia/Jakarta');
         foreach ($chats as $chat){
 
-            $text = $text . date('l jS \of F Y h:i:s A', $chat->timestamp/1000);
+            $text = $text . \Carbon\Carbon::parse($chat->timestamp/1000)->toDayDateTimeString();
             $text = $text . "\r\n";
             $text = $text . $chat->text;
-            $text = $text . PHP_EOL . \Carbon\Carbon::now()->toFormattedDateString();
             $text = $text . "\r\n";
             $text = $text . "\r\n";
         }
