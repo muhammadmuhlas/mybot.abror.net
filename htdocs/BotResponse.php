@@ -35,7 +35,11 @@ class BotResponse{
 		$signature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 
 		/* Logging to Console*/
-        file_put_contents("log.txt", $this->request . PHP_EOL, FILE_APPEND);
+        $myfile = fopen("log.txt", "w") or die("Unable to open file!");
+        $c_log = file_get_contents("log.txt");
+        $txt = $c_log . PHP_EOL . 'Body: '.$this->request . PHP_EOL;
+        fwrite($myfile, $txt);
+        fclose($myfile);
 
 		/* Validation */
 		if (empty($signature)) {
@@ -585,12 +589,9 @@ class BotResponse{
         return $text;
     }
 
-    public function isContainCommand($event, $command){
+    function isContainCommand($event, $command){
 
-        if (strpos($this->botIsReceiveText($event), $command) !== false) {
-
-            return true;
-        }
+        return strpos($this->botReceiveText($event), $command) !== false;
     }
 
     public function getCommandProperties($event, $command){
