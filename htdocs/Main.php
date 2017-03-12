@@ -26,10 +26,10 @@ class Main extends BotResponse {
 
                     if ($this->isContainCommand($event, '@@tugas')){
 
-                        $this->botSendText($event, $this->getCommandProperties($event, '@@tugas'));
-                    }
+                        $command_property = $this->getCommandProperties($event, '@@tugas');
 
-                    $this->botSendText($event, 'lho...');
+                        $this->botSendText($event, $this->getChatsData($command_property));
+                    }
 
                 }
 
