@@ -35,10 +35,7 @@ class BotResponse{
 		$signature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 
 		/* Logging to Console*/
-        $myfile = fopen("log.txt", "w") or die("Unable to open file!");
-        $txt = 'Body: '.$this->request;
-        fwrite($myfile, $txt);
-        fclose($myfile);
+        file_put_contents("log.txt", $this->request . PHP_EOL, FILE_APPEND);
 
 		/* Validation */
 		if (empty($signature)) {
