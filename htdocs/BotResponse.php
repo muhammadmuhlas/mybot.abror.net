@@ -581,7 +581,7 @@ class BotResponse{
         date_default_timezone_set('Asia/Jakarta');
         foreach ($chats as $chat){
 
-            $text = $text . \Carbon\Carbon::parse($chat->timestamp/1000)->toDayDateTimeString();
+            $text = $text . \Carbon\Carbon::parse(-1)->toDayDateTimeString();
             $text = $text . "\r\n";
             $text = $text . $chat->text;
             $text = $text . "\r\n";
