@@ -598,8 +598,13 @@ class BotResponse{
 
     }
 
-    public function getCommandProperties($event, $command){
+    public function getCommandProperties($event, $command, $reply = "Perintah tidak lengkap"){
 
-        return substr($this->botReceiveText($event), strlen($command)+1, strlen($this->botReceiveText($event)));
+        if (strlen($this->botReceiveText($event)) != strlen($command)){
+
+            return substr($this->botReceiveText($event), strlen($command)+1, strlen($this->botReceiveText($event)));
+        }
+
+        return $reply;
     }
 }
