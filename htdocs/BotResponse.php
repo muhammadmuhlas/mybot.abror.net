@@ -17,9 +17,9 @@ class BotResponse{
         $capsule->addConnection([
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'mybot',
-            'username'  => 'mybot',
-            'password'  => 'semarangjogja',
+            'database'  => $_ENV['DATABASE'],
+            'username'  => $_ENV['DATABASE_USERNAME'],
+            'password'  => $_ENV['DATABASE_PASSWORD'],
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
@@ -35,11 +35,11 @@ class BotResponse{
 		$signature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 
 		/* Logging to Console*/
-		file_put_contents('data.txt', 'Body: '.$this->request);
+		file_put_contents('php://stderr', 'Body: '.$this->request);
 
 		/* Validation */
 		if (empty($signature)) {
-			return "Signature not Set";
+			return "Siganature not Set";
 		}
 
 		if ($_ENV['PASS_SIGNATURE'] == false && !SignatureValidator::validateSignature($this->request, $_ENV['CHANNEL_SECRET'], $signature)) {
