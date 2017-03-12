@@ -1,10 +1,7 @@
 <?php
 
-/* Load Required Files */
 require __DIR__ . '/../lib/vendor/autoload.php';
 require "Main.php";
-
-/* Boot Up Apps*/
 
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
@@ -14,18 +11,14 @@ $configs =  [
         'displayErrorDetails' => true
         ]
     ];
+
 $app = new Slim\App($configs);
+$app->get('/', function () {
 
-
-
-/* Routes */
-$app->get('/', function ($request, $response) {
-
-    echo "KLM Project";
-
+    echo "Muhammad Muhlas";
 });
 
-$app->post('/', function ($request, $response) {
+$app->post('/', function () {
 
     $response = new Main();
     $handler = $response->mainBot();
