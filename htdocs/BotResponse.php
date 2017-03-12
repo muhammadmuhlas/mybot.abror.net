@@ -573,7 +573,7 @@ class BotResponse{
 
 	    $chats = Capsule::table('chats')
             ->where('text', 'LIKE', '%' . $query . '%')
-            ->whereNotIn('text', 'LIKE', '%' . $command . '%')
+            ->where('text', 'NOT LIKE', '%' . $command . '%')
             ->orderBy('id', 'desc')
             ->limit(5)
             ->get();
