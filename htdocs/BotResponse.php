@@ -17,9 +17,9 @@ class BotResponse{
         $capsule->addConnection([
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'kotor_line',
-            'username'  => 'kotor',
-            'password'  => 'jokem123',
+            'database'  => $_ENV['DATABASE'],
+            'username'  => $_ENV['DATABASE_USERNAME'],
+            'password'  => $_ENV['DATABASE_PASSWORD'],
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
@@ -66,7 +66,7 @@ class BotResponse{
 
 	public function botDisplayName($userId = null) {
 
-		$getProfile  = $this->bot->getProfile();
+		$getProfile  = $this->bot->getProfile($userId);
 		$profile     = json_decode($getProfile, true);
 		$displayName = $profile['displayName'];
 		return $displayName;
@@ -212,6 +212,39 @@ class BotResponse{
 
 	/* Bot Action */
 
+    public function botEventTypeIsJoinGroup($event){
+
+        if ($this->botEventType($event) == 'join' && $this->botEventSourceIsGroup($event)){
+
+            return true;
+        }
+	}
+
+    public function botEventTypeIsJoinRoom($event){
+
+        if ($this->botEventType($event) == 'join' && $this->botEventSourceIsRoom($event)){
+
+            return true;
+        }
+    }
+
+    public function botEventTypeIsFollowed($event){
+
+        if ($this->botEventType($event) == 'follow' && $this->botEventSourceIsUser($event)){
+
+            return true;
+        }
+    }
+
+    public function botEventTypeIsUnfollowed($event){
+
+        if ($this->botEventType($event) == 'unfollow' && $this->botEventSourceIsGroup($event)){
+
+            return true;
+        }
+    }
+
+
 	/*Leave*/
 	public function botEventLeaveRoom($event) {
 
@@ -293,7 +326,7 @@ class BotResponse{
 
 	public function botSendImagemap($event, $baseUrl, $altText, $baseSizeBuilder, array $imagemapActionBuilders) {
 
-		$input    = new ImagemapMessageBuilder($baseUrl, $altText, $baseSizeBuilder, $imagemapActionBuilders);
+		$input    = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder($baseUrl, $altText, $baseSizeBuilder, $imagemapActionBuilders);
 		$response = $this->bot->replyMessage($this->botEventReplyToken($event), $input);
 
 		if ($response->isSucceeded()) {
@@ -488,14 +521,6 @@ class BotResponse{
 		}
 	}
 
-    public function generateMeme($event){
-
-        $meme = new Meme();
-        $responseMeme = $meme->mainMeme($this->botReceiveText($event));
-
-        return $responseMeme;
-	}
-
     public function saveLogEvent($event){
 
 	    $logTable = Capsule::table('logs');
@@ -558,73 +583,18 @@ class BotResponse{
             $text = $text . "\r\n";
         }
         return $text;
-
     }
 
-    public function IsTextRegexMatchDatabase($event){
+    public function isContainCommand($event, $command){
 
-	    $data_table = Capsule::table('chats')->get('text');
-
-        $f_separator = '/\b';
-        $m_separator = '+(|[^a-z])*';
-        $e_separator = '+\b/i';
-        $data_inputs = array();
-
-        foreach ($data_table as $key => $value){
-
-            $word = "";
-            $word = $word . $f_separator;
-
-            for ($i = 0; $i != strlen($value); $i++){
-
-                $word = $word . $value[$i];
-                if ($i+1 != strlen($value)){
-
-                    $word = $word . $m_separator;
-                }
-            }
-
-            $word = $word . $e_separator;
-            array_push($data_inputs, $word);
-        }
-
-        foreach ($data_inputs as $data_input) {
-
-            if (preg_match($data_input, $this->botReceiveText($event))) {
-
-               return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function IsTextRegexMatchCompare($event, $input){
-
-        $f_separator = '/\b';
-        $m_separator = '+(|[^a-z])*';
-        $e_separator = '+\b/i';
-
-        $word = "";
-        $word = $word . $f_separator;
-
-        for ($i = 0; $i != strlen($this->botReceiveText($event)); $i++){
-
-            $word = $word . $this->botReceiveText($event)[$i];
-            if ($i+1 != strlen($this->botReceiveText($event))){
-
-                $word = $word . $m_separator;
-            }
-        }
-
-        $word = $word . $e_separator;
-
-        if (preg_match($word, $input)) {
+        if (strpos($this->botIsReceiveText($event), $command) !== false) {
 
             return true;
         }
-
-//        return "$word - " . $this->botReceiveText($event);
     }
 
+    public function getCommandProperties($event, $command){
+
+        return ltrim($this->botReceiveText($event),$command . " ");
+    }
 }
