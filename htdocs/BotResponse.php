@@ -598,6 +598,6 @@ class BotResponse{
 
     public function getCommandProperties($event, $command){
 
-        return ltrim($this->botReceiveText($event),$command . " ");
+        return ltrim($this->botReceiveText($event), $command . " ");
     }
 }

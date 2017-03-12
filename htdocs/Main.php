@@ -7,8 +7,6 @@ class Main extends BotResponse {
 
         foreach ($this->botEventsRequestHandler() as $event) {
 
-            $this->botSendText($event, 'lala1');
-
             $this->saveLogEvent($event);
             $this->saveTextMessage($event);
 
@@ -25,6 +23,8 @@ class Main extends BotResponse {
             if ($this->botEventSourceIsUser($event)) {
 
                 if ($this->botIsReceiveText($event)) {
+
+                    $this->botSendText($event, 'lala');
 
                     if ($this->isContainCommand($event, '@@tugas')){
 
