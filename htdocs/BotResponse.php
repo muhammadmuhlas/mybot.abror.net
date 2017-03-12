@@ -591,11 +591,15 @@ class BotResponse{
 
     function isContainCommand($event, $command){
 
-        return strpos($this->botReceiveText($event), $command) !== false;
+        if (substr($this->botReceiveText($event), 0, strlen($command)) === $command){
+
+            return true;
+        }
+
     }
 
     public function getCommandProperties($event, $command){
 
-        return ltrim($this->botReceiveText($event), $command . " ");
+        return substr($this->botReceiveText($event), strlen($command)+1, strlen($this->botReceiveText($event)));
     }
 }
