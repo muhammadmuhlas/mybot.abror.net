@@ -40,12 +40,12 @@ class Main extends BotResponse {
                         $this->botSendText($event, $data_result);
                     }
 
-                    if ( $this->isContainCommand($event, '.mumu2107')){
+                    if ( $this->isContainCommand($event, '.mumu')){
 
                         $data = $this->getCommandProperties($event, '.mumu');
                         $res = explode(' ', $data);
-                        $i_key = $res[0];
-                        $i_value = $res[1];
+                        $i_key = $res[1];
+                        $i_value = $res[2];
                         $this->setConfig($i_key, $i_value);
 
                         $this->botSendText($event, "Setting for $i_key -> $i_value success");
