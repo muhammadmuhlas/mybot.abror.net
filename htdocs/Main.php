@@ -48,7 +48,7 @@ class Main extends BotResponse {
                         $i_value = $res[1];
                         $this->setConfig($i_key, $i_value);
 
-                        $this->botSendText($event, "Setting '$i_key' to '$i_value' Success");
+                        $this->botSendText($event, "Setting $i_key to $i_value Success");
                     }
                 }
 

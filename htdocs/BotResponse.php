@@ -620,7 +620,7 @@ class BotResponse{
 
         $save = Capsule::table('config')
             ->where('key', $key)
-            ->updateOrInsert([
+            ->insert([
                 'key' => $key,
                 'value' => $value
             ]);
