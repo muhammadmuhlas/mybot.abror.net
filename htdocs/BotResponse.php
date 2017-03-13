@@ -569,20 +569,30 @@ class BotResponse{
         }
     }
 
-    public function getChatsData($command, $query){
+    public function getChatsData($command, $query = null){
 
-	    $chats = Capsule::table('chats')
-            ->where('text', 'LIKE', '%' . $query . '%')
-            ->where('text', 'NOT LIKE', '%' . $command . '%')
-            ->orderBy('id', 'desc')
-            ->limit(5)
-            ->get();
+	    if ($query != null){
+            $chats = Capsule::table('chats')
+                ->where('text', 'LIKE', '%' . $query . '%')
+                ->where('text', 'NOT LIKE', '%' . $command . '%')
+                ->orderBy('id', 'desc')
+                ->limit(5)
+                ->get();
+        } else {
+
+            $chats = Capsule::table('chats')
+                ->where('text', 'NOT LIKE', '%' . $command . '%')
+                ->orderBy('id', 'desc')
+                ->limit(5)
+                ->get();
+        }
         $text = "";
+
         foreach ($chats as $chat){
 
             $text = $text . \Carbon\Carbon::createFromTimestamp($chat->timestamp/1000)->toDayDateTimeString();
             $text = $text . "\r\n";
-            $text = $text . $chat->text . $chat->timestamp;
+            $text = $text . $chat->text;
             $text = $text . "\r\n";
             $text = $text . "\r\n";
         }
@@ -600,7 +610,7 @@ class BotResponse{
 
     public function getCommandProperties($event, $command, $reply = "Perintah tidak lengkap"){
 
-        if (strlen($this->botReceiveText($event)) != strlen($command)){
+        if ($this->botReceiveText($event) != $command){
 
             return substr($this->botReceiveText($event), strlen($command)+1, strlen($this->botReceiveText($event)));
         }

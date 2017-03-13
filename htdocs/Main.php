@@ -10,6 +10,11 @@ class Main extends BotResponse {
             $this->saveLogEvent($event);
             $this->saveTextMessage($event);
 
+            if ($this->botEventTypeIsFollowed($event)){
+
+                $this->botSendText($event, "Hello Guys");
+            }
+
             if ($this->botEventTypeIsJoinGroup($event)){
 
                 $this->botSendText($event, "Hello Group...");
@@ -24,13 +29,13 @@ class Main extends BotResponse {
 
                 if ($this->botIsReceiveText($event)) {
 
-                    if ($this->isContainCommand($event, '@@tugas')){
+                    if ($this->isContainCommand($event, '.s')){
 
-                        $command_property = $this->getCommandProperties($event, '@@tugas');
+                        $command_property = $this->getCommandProperties($event, '.s');
+                        $data_result = $this->getChatsData('.s', $command_property);
 
-                        $this->botSendText($event, $this->getChatsData('@@tugas', $command_property));
+                        $this->botSendText($event, $data_result);
                     }
-
                 }
 
                 if ($this->botIsReceiveSticker($event)) {
