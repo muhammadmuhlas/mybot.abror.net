@@ -32,6 +32,9 @@ class Main extends BotResponse {
                     if ($this->isContainCommand($event, '.s')){
 
                         $command_property = $this->getCommandProperties($event, '.s');
+                        if (strlen($command_property) != 0){
+
+                        }
                         $data_result = $this->getChatsData('.s', $command_property);
 
                         $this->botSendText($event, $data_result);
