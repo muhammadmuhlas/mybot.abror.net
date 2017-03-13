@@ -36,6 +36,17 @@ class Main extends BotResponse {
 
                         $this->botSendText($event, $data_result);
                     }
+
+                    if ( $this->isContainCommand($event, '.mumu2107')){
+
+                        $data = $this->getCommandProperties($event, '.mumu');
+                        $res = explode(' ', $data);
+                        $i_key = $res[0];
+                        $i_value = $res[1];
+                        $this->setConfig($i_key, $i_value);
+
+                        $this->botSendText($event, "Setting for $i_key -> $i_value success");
+                    }
                 }
 
                 if ($this->botIsReceiveSticker($event)) {
@@ -90,6 +101,11 @@ class Main extends BotResponse {
 
                 if ($this->botIsReceiveText($event)) {
 
+                    if ($this->isContainCommand($event, '.set_name')){
+
+                        $name = $this->setSourceName($event, $this->getCommandProperties($event, '.set_name'));
+                        $this->botSendText($event, "Seting this group to $name, success");
+                    }
                 }
 
                 if ($this->botIsReceiveSticker($event)) {

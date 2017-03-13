@@ -571,12 +571,22 @@ class BotResponse{
 
     public function getChatsData($command, $query = null){
 
+	    $getLimit = Capsule::table('config')
+                    ->where('key', 'limit')
+                    ->get([
+                        'value'
+                    ])->value;
+
+	    if ($getLimit == null || $getLimit == 0){
+
+            $getLimit = 5;
+        }
 	    if ($query != null){
             $chats = Capsule::table('chats')
                 ->where('text', 'LIKE', '%' . $query . '%')
                 ->where('text', 'NOT LIKE', '%' . $command . '%')
                 ->orderBy('id', 'desc')
-                ->limit(5)
+                ->limit($getLimit)
                 ->get();
         } else {
 
@@ -597,6 +607,28 @@ class BotResponse{
             $text = $text . "\r\n";
         }
         return $text;
+    }
+
+    public function setSourceName($event, $name){
+
+        Capsule::table('source_name')
+            ->where('source_id', $this->botEventSourceGroupId($event))
+            ->updateOrInsert([
+                'source_id' => $this->botEventSourceGroupId($event),
+                'name' => $name
+            ]);
+        return $name;
+    }
+
+    public function setConfig($key, $value){
+
+        $save = Capsule::table('config')
+            ->where('key', $key)
+            ->updateOrInsert([
+                'key' => $key,
+                'value' => $value
+            ]);
+        return $save;
     }
 
     function isContainCommand($event, $command){
