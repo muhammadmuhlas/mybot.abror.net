@@ -611,7 +611,8 @@ class BotResponse{
             $text = $text . "\r\n";
             $text = $text . "\r\n";
         }
-        return $text;
+//        return $text;
+        return $getLimit;
     }
 
     public function setSourceName($event, $name){
