@@ -594,7 +594,7 @@ class BotResponse{
 
         foreach ($chats as $key => $chat){
 
-            $text = $text . $key . \Carbon\Carbon::createFromTimestamp($chat->timestamp/1000)->toDayDateTimeString();
+            $text = $text . "#" . ($key+1) . "# " .\Carbon\Carbon::createFromTimestamp($chat->timestamp/1000)->toDayDateTimeString();
             $text = $text . "\r\n";
             $text = $text . $chat->text;
             $text = $text . "\r\n";
