@@ -627,13 +627,20 @@ class BotResponse{
 
     public function setConfig($key, $value){
 
-        $save = Capsule::table('config')
-            ->where('key', $key)
-            ->updateOrInsert([
+        if (Capsule::table('config')->where('key', 'limit')->count() == 0){
+
+            return Capsule::table('config')
+                ->where('key', $key)
+                ->update([
+                    'value' => $value
+                ]);
+        }
+
+        return Capsule::table('config')
+            ->insert([
                 'key' => $key,
                 'value' => $value
             ]);
-        return $save;
     }
 
     function isContainCommand($event, $command){
