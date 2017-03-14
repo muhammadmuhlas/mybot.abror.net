@@ -571,15 +571,15 @@ class BotResponse{
 
     public function getChatsData($command, $query = null){
 
-        $getLimit = Capsule::table('config')
-            ->where('key', '=', 'limit')
-            ->get([
-                'value'
-            ]);
-
 	    $getCountLimit = Capsule::table('config')
             ->where('key', 'limit')
             ->count();
+
+        $getLimit = Capsule::table('config')
+            ->where('key', '=', 'limit')
+            ->first([
+                'value'
+            ]);
 
         if ($getCountLimit == 0){
 
