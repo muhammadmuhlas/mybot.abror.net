@@ -573,9 +573,9 @@ class BotResponse{
 
 	    $getLimit = Capsule::table('config')
             ->where('key', 'limit')
-            ->first('value');
+            ->first()->value;
 
-	    return json_encode($getLimit->value);
+	    return json_encode($getLimit);
 
 	    if ($query != null){
             $chats = Capsule::table('chats')
