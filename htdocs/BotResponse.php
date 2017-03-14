@@ -574,14 +574,15 @@ class BotResponse{
 	    $getLimit = Capsule::table('config')
             ->where('key', 'limit')
             ->first('value');
-        return json_encode($getLimit);
+
+	    return json_encode($getLimit->value);
 
 	    if ($query != null){
             $chats = Capsule::table('chats')
                 ->where('text', 'LIKE', '%' . $query . '%')
                 ->where('text', 'NOT LIKE', '%' . $command . '%')
                 ->orderBy('id', 'desc')
-                ->limit($getLimit)
+                ->limit((int)$getLimit)
                 ->get();
         } else {
 
