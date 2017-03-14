@@ -605,13 +605,20 @@ class BotResponse{
 
     public function setSourceName($event, $name){
 
-        Capsule::table('source_name')
-            ->where('source_id', $this->botEventSourceGroupId($event))
-            ->updateOrInsert([
+        if (Capsule::table('source_name')->where('source_name', $this->botEventSourceGroupId($event))->count() <> 0){
+
+            return Capsule::table('config')
+                ->where('source_id', $this->botEventSourceGroupId($event))
+                ->update([
+                    'name' => $name
+                ]);
+        }
+
+        return Capsule::table('source_name')
+            ->insert([
                 'source_id' => $this->botEventSourceGroupId($event),
                 'name' => $name
             ]);
-        return $name;
     }
 
     public function setConfig($key, $value){
