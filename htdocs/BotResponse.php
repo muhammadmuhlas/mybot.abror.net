@@ -571,27 +571,13 @@ class BotResponse{
 
     public function getChatsData($command, $query = null){
 
-	    $getCountLimit = Capsule::table('config')
-            ->where('key', 'limit')
-            ->count();
-
-        $getLimit = Capsule::table('config')
-            ->where('key', '=', 'limit')
-            ->first([
-                'value'
-            ]);
-
-        if ($getCountLimit == 0){
-
-            $getLimit = 5;
-        }
 
 	    if ($query != null){
             $chats = Capsule::table('chats')
                 ->where('text', 'LIKE', '%' . $query . '%')
                 ->where('text', 'NOT LIKE', '%' . $command . '%')
                 ->orderBy('id', 'desc')
-                ->limit($getLimit)
+                ->limit(10)
                 ->get();
         } else {
 
@@ -611,8 +597,7 @@ class BotResponse{
             $text = $text . "\r\n";
             $text = $text . "\r\n";
         }
-//        return $text;
-        return $getLimit;
+        return $text;
     }
 
     public function setSourceName($event, $name){
