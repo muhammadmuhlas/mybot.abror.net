@@ -627,7 +627,7 @@ class BotResponse{
 
     public function setConfig($key, $value){
 
-        if (Capsule::table('config')->where('key', 'limit')->count() == 0){
+        if (Capsule::table('config')->where('key', 'limit')->count() <> 0){
 
             return Capsule::table('config')
                 ->where('key', $key)
